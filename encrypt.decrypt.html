@@ -1,0 +1,116 @@
+<!--
+  Author: Andrea Murphy
+  Date: 7/2018
+  Purpose: Simple symmetric key stream cipher encryption system
+-->
+
+<html>
+  <head>
+    <title>Encrypt/Decrypt</title>
+    <script language="JavaScript">
+      <!--
+        var N = 2147483647;
+        var P1 = 16807;
+        var P2 = 1;
+        var seed = 1;
+
+        // random generator
+        function getRandom()
+        {
+          seed = ((P1 * seed) + P2) % N;
+          return seed;
+        }
+
+        // C = E(M)
+        function encryptStr()
+        {
+          var msg = document.info.source.value;  // M
+          var cyph = "";  // C
+          var ascii;
+          var shift;
+
+          seed = convtChar(document.info.passwd.value);
+
+          for (var i=0; i<msg.length; i++)
+          {
+            ascii = msg.charCodeAt(i);
+            ascii = ascii - 32;  // normalize start to 0
+
+            shift = getRandom() % 95;
+
+            ascii = (ascii + shift) % 95;
+            ascii = ascii + 32;  // unormalize back to 32
+
+            cyph = cyph + String.fromCharCode(ascii);
+          }
+
+          document.info.dest.value = cyph;
+        }
+
+        // M = D(C)
+        function decryptStr()
+        {
+          var msg = "";  // M
+          var cyph = document.info.dest.value;  // C
+          var ascii;
+          var shift;
+
+          seed = convtChar(document.info.passwd.value);
+
+          for (var i=0; i<cyph.length; i++)
+          {
+            ascii = cyph.charCodeAt(i);
+            ascii = ascii - 32;  // normalize start to 0
+
+            shift = getRandom() % 95;
+
+            ascii = (ascii + (95 - shift)) % 95;
+            ascii = ascii + 32;  // unormalize back to 32
+
+            msg = msg + String.fromCharCode(ascii);
+          }
+
+          document.info.source.value = msg;
+        }
+
+        function convtChar(password)
+        {
+          var result = 0;
+
+          for (var i = password.length; i > 0; i--)
+              result += Math.floor(Math.random() * password.length
+              );
+          return result;
+        }
+
+      -->
+    </script>
+  </head>
+
+  <body>
+    <form name="info">
+      Password:
+      <input type="text"
+         name="passwd"
+         value="">
+      <br>
+
+      <input type="text"
+         name="source"
+         value="">
+      <input type="button"
+         name="encrypt"
+         value="Encrypt"
+         onclick="encryptStr();">
+      <br>
+
+      <input type="text"
+         name="dest"
+         value="">
+      <input type="button"
+         name="decrypt"
+         value="Decrypt"
+         onclick="decryptStr();">
+    </form>
+  </body>
+</html>

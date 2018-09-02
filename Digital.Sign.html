@@ -1,0 +1,148 @@
+<!--
+  Author: Andrea Murphy
+  Date: 07/2018
+  Purpose: Digital Signature
+-->
+
+<html>
+  <head>
+    <title>Digital Signature</title>
+    <script language="JavaScript">
+      <!--
+        var N = 2147483647;
+        var P1 = 16807;
+        var P2 = 1;
+        var seed = 1;
+
+        // Random generator
+        function getRandom()
+        {
+          seed = ((P1 * seed) + P2) % N;
+          return seed;
+        }
+
+        // Seeder
+        function seedRandom(s)
+        {
+          seed = s;
+        }
+
+        // Converts character string password to number
+        function hashPass(pass)
+        {
+          return checkSum(pass);
+        }
+
+        // C = E(M)
+        function encrypt(key, msg)
+        {
+          var cyph = "";  // C
+          var ascii;
+          var shift;
+
+          seedRandom(key);
+
+          for (var i=0; i<msg.length; i++)
+          {
+            ascii = msg.charCodeAt(i);
+            ascii = ascii - 32;  // normalize start to 0
+
+            shift = getRandom() % 95;
+
+            ascii = (ascii + shift) % 95;
+            ascii = ascii + 32;  // unormalize back to 32
+
+            cyph = cyph + String.fromCharCode(ascii);
+          }
+
+          return cyph;
+        }
+
+        // M = D(C)
+        function decrypt(key, cyph)
+        {
+          var msg = "";  // M
+          var ascii;
+          var shift;
+
+          seedRandom(key);
+
+          for (var i=0; i<cyph.length; i++)
+          {
+            ascii = cyph.charCodeAt(i);
+            ascii = ascii - 32;  // normalize start to 0
+
+            shift = getRandom() % 95;
+
+            ascii = (ascii + (95 - shift)) % 95;
+            ascii = ascii + 32;  // unormalize back to 32
+
+            msg = msg + String.fromCharCode(ascii);
+          }
+
+          return msg;
+        }
+
+        // Checksum function
+        function checkSum(str)
+        {
+          var val=0;
+
+          for (var i=0; i<str.length; i++)
+          {
+            val = val + (i+1)*str.charCodeAt(i);
+          }
+
+          return val;
+        }
+
+        // Takes text from a form and generates digital signature
+        function signStr()
+        {
+          var key = hashPass(document.info.passwd.value);
+          var str = checkSum(document.info.text.value).toString();
+
+          str = encrypt(key, str);
+
+          document.info.digitalSig.value = str;
+        }
+
+        // Takes text from a form and verifies it to signature
+        // Alerts if signature is verified or alerted
+
+        function verifyStr()
+        {
+          var key = hashPass(document.info.passwd.value);
+          var signature = document.info.digitalSig.value;
+          var textcheck = checkSum(document.info.text.value).toString();
+
+          var verifycheckSum = decrypt(key, signature);
+
+          if (textcheck == verifycheckSum)
+          {
+            alert("Verified");
+          }
+          else
+          {
+            alert("Altered...you've been hacked!!");
+          }
+        }
+
+      -->
+    </script>
+  </head>
+
+  <body>
+    <form name="info">
+
+      Password:
+      <input type="text" name="passwd" value="">
+      <br>
+      <input type="text" name="text" size=40>
+      <input type="button" value="sign" onclick="signStr();">
+      <input type="text" name="digitalSig" size=10>
+      <input type="button" value="verify" onclick="verifyStr();">
+
+    </form>
+  </body>
+</html>
