@@ -8,4 +8,4 @@
  - HTML 
 
 **Description:**  
-This repository contains the code for different implementations  of cryptography used for cyber Security. 
+This repository contains the code for different implementations of cryptography used for cyber security. 
